@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<title>メールアドレスエラー</title>
+<link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+	<div class="box">
+		<div class="litle_box">
+			<div class="container">
+	    		<div class="row justify-content-md-center">
+	      			<div class="col-md-8">
+					    	<!-- メールアドレス存在有りエラー -->
+						    
+					        <div class="form-group">
+						        <!-- エラー表示 -->
+						        <h5 class="border-bottom my-3" th:text = "#{mail_error}"></h5>
+					        </div>
+					        
+				        <!-- ログインに戻るボタン --> 
+				        <form th:action="@{/login}" method="get">
+				        <button class="btn btn-primary btn-lg btn-block my-4" type="submit" th:text="#{login_back}"></button>
+				        </form>
+	      			</div>	
+	    		</div>
+			</div>
+		</div>
+	</div>	
+<!-- bootstrap -->	
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src ="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+<!-- パスワードをテキスト化 -->
+<script>
+ const pwd = document.getElementById('password');
+ const pwdCheck = document.getElementById('password-check');
+ pwdCheck.addEventListener('change', function() {
+     if(pwdCheck.checked) {
+         pwd.setAttribute('type', 'text');
+     } else {
+         pwd.setAttribute('type', 'password');
+     }
+ }, false);
+ </script>
+
+</body>
+</html>

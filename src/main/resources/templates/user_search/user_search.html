@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">
+<title>ユーザー検索</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/usersearch.css}" rel="stylesheet">
+</head>
+
+<body>
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 登録アーティストフィールド -->
+
+
+		<div class="R_artistfield"></div>
+
+
+
+		<div class="usersearch_title">ユーザー検索</div>
+		<div class="usersearch_box">
+
+			<div class="container">
+				<div class="row justify-content-md-center">
+					<div class="col-md-8">
+
+						<!-- 入力フォーム -->
+						<form th:action="@{/user_search/user_search}"
+							th:object="${accountForm}" method="post">
+
+							<div class="row">
+								<div class="search_btn2">
+									<label></label>
+									<input type="text" placeholder="ユーザー検索" class="form-control" th:errorclass="is-invalid" name="nickname" th:field="*{nickname}">
+									<div class="invalid-feedback" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></div>
+								</div>							
+									
+								<div class="btn2">
+									<label></label>
+									<button class="btn btn-primary" type="submit">
+										<i class="fas fa-search"></i>
+									</button>
+								</div>
+							</div>
+							
+						</form>
+						
+						<div　th:if="${search_flg == 1}">
+							<div class="null_error">該当するユーザーが存在しませんでした</div>
+						</div>
+
+					</div>
+					
+					<!-- オススメユーザーリスト -->
+					<div class="col-md-8">
+
+						<div th:if="${acc ==null}">
+							
+						
+						</div>
+					
+					</div>
+
+					<!-- 検索結果 -->
+					<div class="col-md-8">
+
+						<div th:if="${acc !=null}">
+							<!-- 画像の表示 -->
+							<form th:action="@{/account/usersearch}" method="post" th:object="${accountForm}">
+							
+								<table border ="0" class="search_table">
+									<tr>
+										<td class="left">
+											<input th:if="${acc !=null}" type="image" id="preview" class="bigsmallimage" th:src="${acc.accountimgpath}">
+										</td>
+										
+										<td>
+											<div  th:if="${acc !=null}" th:text="${acc.getNickname()}"></div>
+										</td>
+										<input type="hidden" class="form-control" th:if="${acc !=null}" name="userid" th:value="${acc.getUserid()}">
+										<input type="hidden" class="form-control" th:if="${acc !=null}" name="mail" th:value="${acc.getMail()}">
+							</form>			
+										<td>
+											<div th:if="${follwflg == 0}">
+												<form th:action="@{/user_search/follow}" method="post" th:object="${followForm}">
+													<div class="follow_btn">
+														<button type="submit" th:text="フォローする" class="btn-primary btn-sm"></button>
+													</div>	
+													<input type="hidden" class="form-control" th:if="${acc !=null}" name="Followaccount" th:value="${accountEntity.userid}">
+													<input type="hidden" class="form-control" th:if="${acc !=null}" name="Followeraccount" th:value="${acc.userid}">
+												</form>
+											</div>
+											
+											<div th:if="${follwflg == 1}">
+												<form th:action="@{/user_search/followcancel}" method="post" th:object="${followForm}">
+													<div class="follow_btn">
+														<button type="submit" th:text="フォロー解除" class="btn-primary btn-sm"></button>
+													</div>
+													<input type="hidden" class="form-control" th:if="${acc !=null}" name="Followaccount" th:value="${accountEntity.userid}">
+													<input type="hidden" class="form-control" th:if="${acc !=null}" name="Followeraccount" th:value="${acc.userid}">
+												</form>
+											</div>
+										</td>
+									</tr>
+								</table>
+								
+							
+	
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- bootstrap -->
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

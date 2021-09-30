@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">	
+<title>アーティストルーム検索</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/artist_room.css}" rel="stylesheet">
+<link th:href="@{/css/account.css}" rel="stylesheet">
+<link th:href="@{/css/artist_list.css}" rel="stylesheet">
+</head>
+<body>
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 登録アーティストフィールド -->
+		<div class="R_artistfield"></div>
+
+		<!------------- フィールド------------->
+		<div class="s_room_title" th:text="#{s_room_title}"></div>
+
+
+		<div class="s_room_box">
+
+			<!-- 入力フォーム -->
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div>
+						<label></label>
+						<input type="text" placeholder="アーティスト名" class="form-control">
+						
+					</div>
+					<div>
+						<label></label>
+						<div class="bb">
+							<button class="btn btn-primary" type="submit" th:text="#{search}"></button>
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<div>
+				<h2 class="a_title">登録アーティスト</h2>
+			</div>
+
+			<div class="row justify-content-md-center">
+				<div class="col-md-12">
+					<table class="myartistlist" border="0">
+
+						<tr th:each="List_Artist_RegisterEntity : ${List_Artist_RegisterEntity}" class="border">
+							<td class="left">
+								<img class="artistimage" name="artist.artistimgpath" th:src="${List_Artist_RegisterEntity.artist.artistimgpath}" />
+								<nobor th:text="${List_Artist_RegisterEntity.artist.artistname}" class="padding" name="artist.artistname" th:value="${List_Artist_RegisterEntity.artist.artistname}"></nobor>
+							
+							</td>
+							<td class="">
+								<form th:action="@{/artist_room/room}" method="post" th:object="${ArtistForm}">
+									<button class="btn-primary btn-sm" type="submit" th:text="ルームを見る"></button>
+									<input type="hidden" name="artistid" th:value="${List_Artist_RegisterEntity.artist.artistid}">
+								</form>
+							</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+
+			
+
+		</div>
+
+	</div>
+
+</body>
+</html>

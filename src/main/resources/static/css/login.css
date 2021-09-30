@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+/* フィールド*/
+.back{
+	background-color: rgba(102,102,102,0.3);
+}
+
+
+.litle_box{
+  position: absolute;
+width: 50%;
+	top: 16%;
+	left: 0;
+  	right: 0;
+  	margin: auto;
+  font-size: 15px;
+  border-radius: 5px;
+  background-color: rgba(255,255,255,0.4);
+  line-height: 3.0em;
+  color: #000000;
+  border-bottom: solid 6px #808080;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 9px;
+  text-align: center;
+}

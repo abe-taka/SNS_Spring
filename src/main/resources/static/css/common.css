@@ -1,0 +1,438 @@
+@charset "UTF-8";
+
+/*----- ページ全体 -----*/
+html{
+  height:100%;
+}
+body{
+  height:100%;
+  background-color: rgba(192,192,192,0.2);
+  font-family:  serif;
+}
+
+/* トップバー*/
+.top{
+	position: absolute;
+	width: 100%;
+	height: 9%;
+	top: 0%;
+	left: 0;
+  	right: 0;
+  	margin: auto;
+	background-color: rgba(0,0,0,0.5);
+}
+
+.box {
+  position:  relative;
+  width:  100%;
+  height: 100%;
+  margin: 0 auto;
+}
+
+
+/* プロジェクトタイトル*/
+.project_title{
+	margin-left: 5%;
+	margin: -5px;
+	line-height: 2em;
+ 	color: #ffffff;/*文字色*/
+ 	font-size: 25px;
+}
+
+/* メニュータイトル*/
+.menu_title{
+	position: absolute;
+  	width: 20%;
+  	height: 10%;
+  	top: 11%;
+	left: 3%;
+	margin: auto;
+	line-height: 2.5em;
+ 	color: #ffffff;/*文字色*/
+ 	font-size: 25px;
+ 	text-align: center;
+ 	background-color: rgba(0,0,0,0.5);
+  	border-bottom: solid 1px #808080;
+  	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+  	border-radius: 3px;
+}
+
+/* 登録アーティストタイトル */
+.his_message_title{
+	position: absolute;
+  	width: 20%;
+  	height: 10%;
+  	top: 11%;
+	right: 3%;
+	margin: auto;
+	line-height: 2.5em;
+ 	color: #ffffff;/*文字色*/
+ 	font-size: 25px;
+ 	text-align: center;
+ 	background-color: rgba(0,0,0,0.5);
+  	border-bottom: solid 1px #808080;
+  	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+  	border-radius: 3px;
+}
+
+
+/*----- ナビゲーション -----*/
+/* フィールド */
+.navi_box{
+	position: absolute;
+  	width: 20%;
+  	height: 79%;
+  	top: 21%;
+  	left: 3%;
+  	font-size: 20px;
+  	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  	background-color: rgba(255,255,255,1);
+  	border-radius: 3px;
+}
+
+/* 登録ルームフィールド */
+.R_artistfield{
+	position: absolute;
+  	width: 20%;
+  	height: 79%;
+  	right: 3%;
+  	top: 21%;
+  	font-size: 20px;
+  	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  	background-color: rgba(255,255,255,1);
+  	border-radius: 3px;
+}
+
+
+
+/* タグ */
+ul.sidenav {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 270px;
+	position: relative;
+	overflow: auto;
+	
+}
+ul.sidenav li a {
+	display: block;
+	color: #696969;
+	padding: 8px 16px;
+	text-decoration: none;
+	border-radius: 6px;
+}
+ul.sidenav li a.active {
+	background-color: #da3c41;
+	color: white;
+}
+ul.sidenav li a:hover:not(.active) {
+	background-color: #1e90ff;
+	color: white;
+}
+div.content {
+	margin-left: 25%;
+	padding: 1px 16px;
+	height: 1000px;
+}
+@media screen and (max-width: 900px) {
+	ul.sidenav {
+		width: 100%;
+		height: auto;
+		position: relative;
+	}
+	ul.sidenav li a {
+		float: left;
+		padding: 15px;
+	}
+	div.content {
+		margin-left: 0;
+	}
+}
+@media screen and (max-width: 480px) {
+	ul.sidenav li a {
+		text-align: center;
+		float: none;
+	}
+}
+
+
+
+
+
+#file_01,#mask_file_01{
+	display:none;
+}
+.file_mask span{
+	display:block;
+	background-image:url(/image/chat_send/icon/maru.jpg);
+	background-position:left top;
+	height:81px;
+	width:354px;
+	cursor:pointer;
+}
+.file_mask span:hover{
+	background-position:left bottom;
+}
+
+/* フィールド*/
+.back{
+	background-color: rgba(102,102,102,0.3);
+}
+
+.litle_box{
+  position: absolute;
+  top: 120px;
+  width: 500px;
+  font-size: 15px;
+  border-radius: 5px;
+  background-color: rgba(255,255,255,0.4);
+  line-height: 3.0em;
+  color: #000000;
+  border-bottom: solid 6px #808080;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+    border-radius: 9px;
+  text-align: center;
+}
+
+/*----- ボタン -----*/
+/* ファイルアップロードボタン(非表示) */
+.filesend {
+   display: none;
+}
+
+/*ナビゲーション*/
+.cp_navi {
+	background-color: #ffffff;
+	border: 1px solid #dedede;
+	border-radius: 4px;
+	box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
+	color: #888888;
+	display: block;
+	margin: 1em 1%;
+	overflow: hidden;
+	width: 100%;
+}
+.cp_navi ul {
+	margin: 0;
+	padding: 0;
+}
+.cp_navi ul li {
+	display: inline-block;
+	list-style-type: none;
+	-webkit-transition: all 0.2s;
+	        transition: all 0.2s;
+}
+.cp_navi > ul > li > a > .caret {
+	border-top: 4px solid #aaaaaa;
+	border-right: 4px solid transparent;
+	border-left: 4px solid transparent;
+	content: '';
+	display: inline-block;
+	height: 0;
+	width: 0;
+	vertical-align: middle;
+	-webkit-transition: color 0.1s linear;
+	        transition: color 0.1s linear;
+}
+.cp_navi > ul > li > a {
+	color: #aaaaaa;
+	display: block;
+	line-height: 56px;
+	padding: 0 10px;
+	text-decoration: none;
+}
+.cp_navi > ul > li:hover {
+	background-color: rgba(218, 60, 65);
+}
+.cp_navi > ul > li:hover > a {
+	color: rgb( 255, 255, 255 );
+}
+.cp_navi > ul > li:hover > a > .caret {
+	border-top-color: rgb( 255, 255, 255 );
+}
+.cp_navi > ul > li > div {
+	background-color: rgb(218, 60, 65);
+	border-top: 0;
+	border-radius: 0 0 4px 4px;
+	box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
+	display: none;
+	margin: 0;
+	opacity: 0;
+	position: absolute;
+	width: 165px;
+	visibility: hidden;
+	-webkit-transiton: opacity 0.2s;
+	       transition: opacity 0.2s;
+}
+.cp_navi > ul > li:hover > div {
+	display: block;
+	opacity: 1;
+	visibility: visible;
+}
+.cp_navi > ul > li > div ul > li {
+	display: block;
+}
+.cp_navi > ul > li > div ul > li > a {
+	color: #ffffff;
+	display: block;
+	padding: 12px 24px;
+	text-decoration: none;
+}
+.cp_navi > ul > li > div ul > li:hover > a {
+	background-color: rgba( 255, 255, 255, 0.1);
+}
+
+
+
+
+
+
+
+.comment_field{
+	margin: 110px 0px 50px -140px;
+}
+
+.comment{
+	width: 1000px;
+}
+
+/* コメント画像*/
+.commentimage {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.c_nickname{
+	background-color: rgba(255,255,255,0.4);
+	border: 0px solid;
+	text-shadow: 1px 1px 0 rgba(65,105,225,0.55);
+	font-size: 15px;
+}
+
+.commentday{
+	text-shadow: 1px 1px 0 rgba(65,105,225,0.55);
+
+	font-size: 13px;
+}
+
+.c_sentence{
+	text-shadow: 1px 1px 0 rgba(105,105,105,0.65);
+	font-size: 15px;
+}
+
+.top_img{
+	width: 30px;
+	height: 30px;
+	margin: 15px 0px 0px 130px;
+}
+
+.top_img2{
+	width: 30px;
+	height: 30px;
+	margin: -80px 0px 0px 360px;
+}
+
+.top_text{
+	color: rgba(255,255,255,1);
+	font-size: 35px;
+	margin: -40px 0px 0px 170px;
+	font-family: SimSun;
+	font-weight: bold;
+}
+
+
+.search_btn{
+	float: right;
+	margin: -70px 200px 0px 0px;
+}
+
+.header_accountimg{
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	float: right;
+	margin: -45px -110px 0px 0px;
+	border-bottom: solid 1px #808080;
+  	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+}
+
+
+.button1{
+  display:block;
+  position:relative;
+}
+.button1 i{
+  margin-top:-0.5em;
+  color:#0070be;
+}
+
+/* 良いね機能、コメントmodalボタン */
+.toggle_img{
+	width: 30px;
+	height: 30px;
+}
+
+.n_cbox{
+	margin-top: 0px;
+	width: 100%;
+}
+
+.n_box{
+	margin: 0px auto 0 10px;
+	padding-top: 30px;
+}
+
+.c_box{
+	margin: -38px auto 0 60px;
+}
+
+.comment_img{
+	width: 35px;
+	height: 35px;
+	margin-left: 9%;
+}
+
+@keyframes heartAnimation {
+  0% {
+    /* アイコンサイズをもとのより小さくする */
+    transform: scale(0.5);
+  }
+  10% {
+    transform: scale(0.7);
+  }
+  30% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1.5);
+  }
+  100% {
+    /* もとのサイズに戻す */
+    transform: scale(1.0);
+  }
+}
+
+
+.LikesIcon-fa-heart{
+  font-size: 30px;
+  margin-left: 7%;
+}
+
+.LikesIcon-fa-heart.heart{
+  /* heartAnimationアニメーションを200ミリ秒かけて実行する */
+  animation: heartAnimation .2s;
+  /* アイコン色を黒から赤へ変更する */
+  color: #e2264d;
+}
+
+.nullmessage{
+	margin-top: 2%;
+	margin-bottom: 2%;
+	text-align: center;
+	font-size: 20px;
+}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+	crossorigin="anonymous"></script>
+
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+<title>DM</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/dm.css}" rel="stylesheet">
+
+</head>
+<!-- bodyの色を少し暗くする  -->
+<body>
+
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+		
+		<!-- 登録アーティストフィールド -->
+		
+		
+		<div class="R_artistfield">
+		
+		
+		</div>
+
+		<!-- DMのフィールド -->
+		<div class="dm_title">DM</div>
+
+		<div class="container">
+			<!-- テキストの両端にスペースを付ける -->
+			<div class="dm_box">
+				<div class="dmuser_box">
+					<!-- 相手のアカウント画像、ニックネーム -->
+					<table>
+						<tr>
+							<td><input type="image" class="dmimage"
+								th:src="${acc.accountimgpath}"></td>
+							<td th:text="${acc.nickname}"></td>
+						</tr>
+					</table>
+				</div>
+
+				<div class="dmmessage_box">
+				
+					<div th:each="dmlist:${dmlist}" class="dm_message">
+						<div th:text="${dmlist.sentence}" class="dm_sentence"></div>
+						<div th:text="${dmlist.dmmessageday}" class="min_size"></div>
+					</div>	
+					
+					<!-- 非同期表示 -->
+					<div class="dm_message" id="parent-div">
+						
+					</div>
+					
+				</div>
+
+				<div class="input_box">
+					<form th:object="${dmmessage}" name="form1" class="form-inline my-2 my-lg-0" enctype="multipart/form-data">
+						<!-- enctype="multipart/form-data":ファイルデータをおくるのに必ず必要 -->
+						<div class="form-group" id="aa">
+							<!-- 文章 -->
+							<input class="form-control input-lg" type="text" placeholder="メッセージ入力" aria-label="Search" name="sentence" th:field="*{sentence}">
+							<input type="button" th:value="#{submit}" class="btn btn-primary" th:onclick="clickBtn()" />
+						</div>
+						<!-- 自分のユーザーメール -->
+						<input type="hidden" name="sendusermail" th:value="${roomEntity.yuanaccount.mail}">
+						<!-- 相手ののユーザーメール -->
+						<input type="hidden" name="getusermail" th:value="${roomEntity.guestaccount.mail}">
+						<!-- DMルームid -->
+						<input type="hidden" name="dmroom" th:value="${roomEntity.getDmroomid()}">
+					</form>
+					
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+
+	<!-- bootstrap -->
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+	<script>
+		$('#myImage').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+
+
+	<!-- DMメッセージデータの取得 -->
+	<script>
+		function clickBtn() {
+			// 値を取得
+			const roomid = document.form1.dmroom.value;
+			const yuanMail = document.form1.sendusermail.value;
+			const guestMail = document.form1.getusermail.value;
+			const text = document.form1.sentence.value;
+
+			//ログ
+			console.log("roomid", roomid);
+			console.log("yuanMail", yuanMail);
+			console.log("guestMail", guestMail);
+			console.log("sentence", text);
+
+			//非同期通信
+			$.ajax({
+				type : "get",
+				url : "/search_dmdata", //Controllerを呼び出すURLになっていればOK
+				data : {
+					roomid : roomid,
+					yuanMail : yuanMail,
+					guestMail : guestMail,
+					sentence : text
+				}, //JSON(連想配列)を文字列に変換
+				contentType : 'application/json; charset=UTF-8',
+				dataType : "json"
+			}).then(function(data) {
+				//成功時
+				console.log('DM処理成功');
+				console.log('data', data);
+				
+				//表示処理[sentence]
+				var text = (data["sentence"]);
+				console.log('text', text);
+				var newElement = document.createElement("div"); // p要素作成
+				var newContent = document.createTextNode(text); // テキストノードを作成
+				newElement.appendChild(newContent);
+				newElement.setAttribute("id","output1"); // p要素にidを設定
+				var parentDiv = document.getElementById("parent-div");
+				// 追加
+				parentDiv.appendChild(newElement);
+				//cssを動的に適用
+				document.getElementById("output1").classList.add("dm_sentence");
+
+				
+				//表示処理[dmmessageday]
+				var text2 = (data["dmmessageday"]);
+				console.log('text2', text2);
+				var newElement2 = document.createElement("div"); // p要素作成
+				var newContent2 = document.createTextNode(text2); // テキストノードを作成
+				newElement2.appendChild(newContent2);
+				newElement2.setAttribute("id","output2"); // p要素にidを設定
+				var parentDiv2 = document.getElementById("parent-div");
+				// 追加
+				parentDiv2.appendChild(newElement2);
+				//cssを動的に適用
+				document.getElementById("output2").classList.add("min_size");
+
+			}, function() {
+				//失敗時
+				console.log('DM処理失敗');
+			});
+		}
+	</script>
+
+</body>
+</html>

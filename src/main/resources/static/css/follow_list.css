@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+.follow_box{
+	position: absolute;
+	width: 52%;
+	height: 40%;
+	top: 21%;
+	left: 0;
+  	right: 0;
+  	margin: auto;
+	font-size: 15px;
+	background-color: rgba(255,255,255,1);
+	line-height: 3.0em;
+  	color: #000000;
+  	border-bottom: solid 0px #808080;
+  	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+}
+
+.left{
+	width: 15%;
+}
+
+.center{
+	width: 60%;
+}
+
+.follow_title{
+	position: absolute;
+  	width: 52%;
+  	height: 10%;
+  	top:11%;
+  	right: 0%;
+	left: 0%;
+	margin: auto;
+	line-height: 2.5em;
+ 	color: #ffffff;/*文字色*/
+ 	font-size: 25px;
+ 	text-align: center;
+ 	background-color: rgba(0,0,0,0.5);
+  	border-bottom: solid 1px #808080;
+  	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.25);
+  	border-radius: 3px;
+}
+
+.follow_btn{
+	
+}

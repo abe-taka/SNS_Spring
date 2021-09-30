@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+	crossorigin="anonymous"></script>
+
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">
+<title>フォロワーー一覧</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/usersearch.css}" rel="stylesheet">
+<link th:href="@{/css/follow_list.css}" rel="stylesheet">
+</head>
+<body>
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 登録アーティストフィールド -->
+
+
+		<div class="R_artistfield"></div>
+		<!------------- プロフィール ------------->
+
+		<!-- タイトル -->
+		<div class="follow_title" th:text="フォロワー一覧"></div>
+
+		<div class="follow_box">
+			<div th:each="followerEntity: ${followerEntity}">
+				<form th:action="@{/account/usersearch}" method="post" th:object="${accountForm}">
+					<table border="1" class="search_table">
+						<tr>
+							<td class="left">
+								<input type="image" class="bigsmallimage" th:src="${followerEntity.followaccount.accountimgpath}">
+							</td>
+	
+							<td>
+								<div th:text="${followerEntity.followaccount.nickname}"></div>
+							</td>
+							<input type="hidden" class="form-control" name="userid" th:value="${followerEntity.followaccount.getUserid()}">
+							<input type="hidden" class="form-control" name="mail" th:value="${followerEntity.followaccount.getMail()}">
+				</form>		
+							<td>
+								<form th:action="@{/followlist/delete}" method="post" th:object="${followForm}">
+									<div class="follow_btn">
+										<button type="submit" th:text="フォロー解除" class="btn-primary btn-sm"></button>
+									</div>
+									<input type="hidden" class="form-control" name="Followaccount" th:value="${accountEntity.userid}">
+									<input type="hidden" class="form-control" name="Followeraccount" th:value="${followerEntity.followaccount.userid}">
+								</form>
+							</td>
+						</tr>
+					</table>	
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

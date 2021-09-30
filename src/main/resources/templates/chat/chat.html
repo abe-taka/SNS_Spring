@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+	crossorigin="anonymous"></script>
+
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<!-- 検索ボタンのアイコン -->
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">
+
+<title>チャットページ</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/chat.css}" rel="stylesheet">
+
+</head>
+<body>
+
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 登録アーティストフィールド -->
+
+
+		<div class="R_artistfield"></div>
+
+
+		<!-- タイトル -->
+		<div class="chat_title" th:text="#{chat_title}"></div>
+		<div class="chat_box">
+
+
+			<!-- 投稿フィールド -->
+			<div class="roomchat">
+
+				<div th:if="${flag == 0}">
+					<div class="nullmessage">
+						<div>ユーザ―をフォローしよう!</div>
+						<form th:action="@{/user_search/user_search}" method="get">
+							<button  class="btn btn-primary" type="submit" th:text="ユーザー検索へ"></button>
+						</form>
+					</div>
+				</div>
+
+
+				<div th:if="${flag == 1}">
+				<div th:each="getchatsendEntity : ${getchatsendEntity}"
+					th:object="${getchatsendEntity}">
+					<ul class="sidenav2">
+						<li>
+							<form th:action="@{/chat/chat_details}" method="post"
+								th:object="${chatsendForm}">
+								<a href="javascript:void(0)" onclick="this.parentNode.submit()">
+									<input type="hidden" name="chatsendid"
+									th:value="${getchatsendEntity.chatsendid}">
+
+
+									<table border="0" class="chat_sfield">
+										<tr>
+											<form th:action="@{/account/account_top}" method="post">
+												<td rowspan="1" class="imgfield">
+													<!-- アカウント画像 --> <input type="image" class="chatimage"
+													th:src="${getchatsendEntity.account.accountimgpath}">
+													<input type="hidden" th:if="${account !=null}"
+													class="form-control" name="mail"
+													th:value="${getchatsendEntity.account.getMail()}">
+												</td>
+
+
+												<td>
+													<!-- ニックネーム -->
+													<button class="c_nickname" type="submit"
+														th:text="${getchatsendEntity.account.nickname}"></button>
+													<div class="c_chatsendday"
+														th:text="${getchatsendEntity.chatsendday}"></div>
+												</td>
+											</form>
+											
+
+										</tr>
+
+										<!-- 文章 -->
+										<tr>
+											<td colspan="3">
+												<div>
+													<p class="c_sentence"
+														th:text="${getchatsendEntity.sentence}"></p>
+												</div>
+											</td>
+										</tr>
+									</table> <!-- 画像 -->
+									<table border="0" class="imgsize">
+										<tr>
+											<td><img th:src="${getchatsendEntity.chatimgpath1}"></td>
+											<td><img th:src="${getchatsendEntity.chatimgpath2}"></td>
+										</tr>
+										<tr>
+											<td><img th:src="${getchatsendEntity.chatimgpath3}"></td>
+											<td><img th:src="${getchatsendEntity.chatimgpath4}"></td>
+										</tr>
+									</table>
+
+									</a>
+							</form>
+						</li>
+
+					</ul>
+									<hr>
+								
+					<div class="n_cbox">
+						<form name="form10" >
+							<a class="LikesIcon" href="javascript:void(0)"
+								th:onclick="'func10(' + ${getchatsendEntity.chatsendid} + ',' + ${account.userid} + ');'">
+								<i class="far fa-heart LikesIcon-fa-heart"></i>
+								<input type="hidden" name="chatsendid" th:value="${getchatsendEntity.chatsendid}">
+							</a>
+						</form>
+						
+						<!-- modalボタン -->
+						<div class="c_box">
+							<input type="image" src="/image/default/comment.png" class="comment_img" th:onclick="'func1(' + ${getchatsendEntity.chatsendid} + ');func2(' + ${getchatsendEntity.account.userid} + ');'" data-toggle="modal" data-target="#modal1">
+						</div>
+					</div>
+
+					<hr>
+
+					<!-- modal -->
+					<div class="modal fade" id="modal1" tabindex="-1" role="dialog"
+						aria-labelledby="label1" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+
+								<!-- ヘッダー -->
+								<div class="modal-header">
+									<table border="0">
+										<tr>
+											<td rowspan="3">
+											<input type="image" class="commentbigsmallimage" id="json_accountimg">
+											</td>
+										</tr>
+
+										<tr class="post_nickname">
+											<td id="json_nickname"></td>
+											<td><input type="hidden" id="json_chatid"></td>
+
+										</tr>
+
+										<tr class="post_sentence">
+											<td id="json_sentence"></td>
+										</tr>
+
+									</table>
+
+
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+
+								</div>
+
+
+								<!-- ページ本文 -->
+								<div class="modal-body">
+									<form th:action="@{/account/comment}" method="post"
+										th:object="${commentForm}" enctype="multipart/form-data">
+										<div class="container">
+											<div class="row justify-content-md-center">
+
+												<div class="col-md-8">
+
+													<div class="center">
+														<h5 class="border-bottom my-3">コメント</h5>
+													</div>
+
+													<div th:each="getchatsendEntity : ${getchatsendEntity}"
+														th:object="${getchatsendEntity}">
+														<input type="hidden" class="form-control"
+															name="chatsendid" th:value="*{chatsendid}">
+													</div>
+													<input type="hidden" class="form-control" name="userid"
+														th:value="${account.getUserid()}">
+
+
+													<!-- 文章フォーム -->
+													<div class="center">
+														【コメント内容】
+														<textarea name="sentence" class="form-control"
+															style="overflow: hidden;" rows="4" cols="40"></textarea>
+													</div>
+
+													<!-- 画像の表示 -->
+													<div class="center">
+														【画像】
+														<div>
+															<label> <!-- ▽見せる部分 --> <span class="filelabel"
+																title="ファイルを選択"> <img class="bigsmallimage"
+																	id="preview" th:src="${iconimage}" />
+															</span> <!-- ▽本来の選択フォームは隠す --> <!-- 画像選択ボタン--> <input
+																type="file" name="multipartFile" id="myImage"
+																class="filesend" accept="image/*">
+
+															</label>
+														</div>
+													</div>
+
+													<!-- コメントボタン -->
+													<div class="center">
+														<div class="btn btn-default btnNext">
+															<button class="btn btn-primary" type="submit"
+																th:text="投稿"></button>
+														</div>
+													</div>
+
+												</div>
+
+											</div>
+
+										</div>
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
+
+				</div>
+				</div>
+			</div>
+
+
+
+
+
+		</div>
+	</div>
+
+
+		<!-- modal[コメント登録+表示] -->
+		<!-- 投稿データの取得 -->
+		<script>
+			function func1(id) {
+				//引数のログ
+				console.log("引数", id)
+
+				// Ajaxにてsearch関数を呼び出す
+				let request = new XMLHttpRequest();
+				request.open("get", "/search_chatdata?id=" + id, true);
+				request.send(null);
+				console.log('[c]11111');
+
+				request.onload = function(event) {
+					// Ajaxが正常終了した場合
+					if (request.readyState === 4 && request.status === 200) {
+						// 該当するデータが無かった場合
+
+						// 該当するデータがあった場合は、取得したUserDataオブジェクトの内容を画面に
+						// 表示する。その際、名前・性別・メモはデコードする
+						console.log('[c]22222');
+						//　「|| "null"」　を追記しないと空文字がある場合にエラーが発生する
+						const chatsendEntity = JSON.parse(request.responseText
+								|| "null");
+						console.log('[c]33333');
+						//投稿id
+						document.getElementById('json_chatid').textContent = decodeURI(chatsendEntity.chatsendid);
+						//文章
+						document.getElementById('json_sentence').textContent = decodeURI(chatsendEntity.sentence);
+						//投稿日
+						document.getElementById('json_chatsendday').textContent = decodeURI(chatsendEntity.chatsendday);
+						console.log('[c]44444');
+
+						// Ajaxが異常終了した場合
+					} else {
+						console.log("[c](1)エラーが発生し、データが取得できませんでした");
+					}
+				};
+				// Ajaxが異常終了した場合
+				request.onerror = function(event) {
+					console.log("[c](2)エラーが発生し、データが取得できませんでした");
+				}
+
+			}
+		</script>
+
+
+		<!-- アカウントデータの取得 -->
+		<script>
+			function func2(userid) {
+				//引数のログ
+				console.log("引数", userid)
+
+				// Ajaxにてsearch関数を呼び出す
+				let request = new XMLHttpRequest();
+				request.open("get", "/search_accountdata?userid=" + userid,
+						true);
+				request.send(null);
+				console.log('[a]11111');
+
+				request.onload = function(event) {
+					// Ajaxが正常終了した場合
+					if (request.readyState === 4 && request.status === 200) {
+						// 該当するデータが無かった場合
+
+						// 該当するデータがあった場合は、取得したUserDataオブジェクトの内容を画面に
+						// 表示する。その際、名前・性別・メモはデコードする
+						console.log('[a]22222');
+						//　「|| "null"」　を追記しないと空文字がある場合にエラーが発生する
+						const accountEntity = JSON.parse(request.responseText
+								|| "null");
+						console.log('[a]33333');
+						//ニックネーム
+						document.getElementById('json_nickname').textContent = decodeURI(accountEntity.nickname);
+						//画像パス
+						console.log('accountEntity.accountimgpath',accountEntity.accountimgpath);
+						document.getElementById('json_accountimg').textContent = decodeURI(accountEntity.accountimgpath); 
+						console.log('[a]44444');
+
+						// Ajaxが異常終了した場合
+					} else {
+						console.log("[a](1)エラーが発生し、データが取得できませんでした");
+					}
+				};
+				// Ajaxが異常終了した場合
+				request.onerror = function(event) {
+					console.log("[a](2)エラーが発生し、データが取得できませんでした");
+				}
+
+			}
+		</script>
+		
+		<script>
+		$(".toggle_img").on("click", function() {
+			if ($(this).hasClass("change")) {
+				$(this).attr("src", "/image/default/on_nice.png");
+				$(this).toggleClass("change");
+			} else {
+				$(this).attr("src", "/image/default/n_nice.png");
+				$(this).toggleClass("change");
+			}
+		});
+	</script>
+
+	<!-- ハートアニメーション -->
+	<script>
+		// Likeボタンクリック
+		$('.LikesIcon').on(
+				'click',
+				function() {
+					let $btn = $(this);
+					// Likeボタンがonクラス持っていたら
+					if ($btn.hasClass('on')) {
+
+						$btn.removeClass('on');
+
+						// 白抜きアイコンに戻す
+						$btn.children("i").attr('class',
+								'far fa-heart LikesIcon-fa-heart');
+
+					} else {
+
+						$btn.addClass('on');
+
+						// ポイントは2つ！！
+						// ①アイコンを変更する
+						// far fa-heart（白抜きアイコン）
+						// ⇒ fas fa-heart（背景色つきアイコン）
+						// ②アニメーション+アイコン色変更用のheartクラスを付与する
+
+						$btn.children("i").attr('class',
+								'fas fa-heart LikesIcon-fa-heart heart');
+
+					}
+				});
+	</script>
+		
+</body>
+</html>

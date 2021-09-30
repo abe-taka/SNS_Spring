@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+	crossorigin="anonymous"></script>
+
+<!-- 画像拡大 -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/css/lightbox.css"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.7.1/js/lightbox.min.js"
+	type="text/javascript"></script>
+
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">
+<title>アカウント</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/account.css}" rel="stylesheet">
+</head>
+<body>
+
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+			<form th:action="@{/account/account_top}" method="get">
+			<input type="image" class="header_accountimg" th:src="${Top_base64image}" />
+			</form>
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		
+		<!-- メッセージ履歴 -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+		
+		<div class="R_artistfield">
+			<table border="0" th:each="message_list : ${message_list}" th:object="${message_list}" class="message_table">
+				<tr>
+					<td colspan="2">
+						<div th:text="--+*{content}" class="message_content"></div>
+						
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="messageimage_box">
+						<img th:src="*{senderaccount.accountimgpath}" class="messageimage">
+					</td>
+					
+					<td th:text="*{senderaccount.nickname}"class="messagenickname">
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+					</td>
+					<td>
+						<div th:text="*{messageday}" class="messageday"></div>
+						
+					</td>
+				</tr>
+			</table>
+		</div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+
+
+
+		<!----- タイトル ----->
+		<div class="profile_title" th:text="#{profile}"></div>
+
+		<!------------- プロフィール ------------->
+		<div class="profile_box">
+
+			<div class="profile_minbox">
+				<div>
+					<table border="0">
+						<tr>
+							<!-- アカウント画像-->
+							<td><a
+								href="/image/account/*{account.mail}/*{account.mail}.jpg"
+								data-lightbox="group"><img class="accountimage"
+									th:src="${base64image}" width="300" /></a></td>
+							<!-- ニックネーム -->
+							<td colspan="3" class="acctop_nickname"
+								th:text="*{account.nickname}"></td>
+						</tr>
+
+						<tr>
+							<!-- フォロー数、フォロワー数 -->
+							<td></td>
+
+							<td colspan="3" class="acctop_followtext">
+								<!-- フォロー数 -->
+								<form th:action="@{/account/follow_list}" method="post"
+									th:object="${followForm}" style="display: inline">
+									<a href="javascript:void(0)" onclick="this.parentNode.submit()">フォロー数
+										<nobr th:text="${account.follownum}+人"></nobr>
+									</a> <input type="hidden" name="followaccount"
+										th:value="${account.userid}">
+								</form> <!-- フォロワー数 -->
+								<form th:action="@{/account/follower_list}" method="post"
+									th:object="${followForm}" style="display: inline">
+									<a href="javascript:void(0)" onclick="this.parentNode.submit()"
+										class="acctop_followertext">フォロワー数 <nobr
+											th:text="${account.getFollowernum()}+人"></nobr></a> <input
+										type="hidden" name="followeraccount"
+										th:value="${account.userid}">
+								</form>
+							</td>
+						</tr>
+
+						<tr>
+							<!-- 自己紹介文 -->
+							<td></td>
+							<td colspan="2" class="acctop_introtext"
+								th:text="*{account.introduction}"></td>
+						</tr>
+					</table>
+
+					<!-- 他ユーザーのアカウントページの場合 -->
+					<div th:if="${str != ma}">
+						<div class="min">
+
+							<!-- フォローボタン -->
+							<form th:action="@{/follow}" method="post"
+								th:object="${followForm}">
+								<div th:if="${followflg.equals(2)}">
+									<button class="btn btn-primary " type="submit" th:text="フォロー"></button>
+								</div>
+								<input type="hidden" name="followeraccount"
+									th:value="${account.userid}"> <input type="hidden"
+									name="followaccount" th:value="${session_account.userid}">
+							</form>
+
+							<!-- フォロー解除ボタン -->
+							<form th:action="@{/follow/delete}" method="post"
+								th:object="${followForm}">
+								<div th:if="${followflg.equals(1)}">
+									<button class="btn btn-primary btn" type="submit"
+										th:text="フォロー解除"></button>
+									<input type="hidden" name="followeraccount"
+										th:value="${account.userid}"> <input type="hidden"
+										name="followaccount" th:value="${session_account.userid}">
+								</div>
+							</form>
+						</div>
+
+						<div class="min2">
+							<!-- DM -->
+							<form th:action="@{/dm/dmroom}" method="post"
+								th:object="${dmroom}">
+								<input type="hidden" name="yuanaccount"
+									th:value="${session_account.userid}"> <input
+									type="hidden" name="guestaccount" th:value="${account.userid}">
+								<button class="btn btn-primary" type="submit" th:text="メッセージ"></button>
+							</form>
+						</div>
+					</div>
+
+					<!-- 自分のアカウントページの場合 -->
+					<!-- 設定ボタン -->
+					<div th:if="${str == ma}" class="min">
+						<!-- <img src="/image/default/setting.jpg" class="settingimage"> -->
+						<ul id="menu">
+							<li>
+								<button type="button" th:text="設定" class="btn-primary btn-sm"></button>
+								<ul>
+									<li>
+										<form th:action="@{/account/account_manage/}" method="get">
+											<a href="javascript:void(0)"
+												onclick="this.parentNode.submit()">アカウント編集</a>
+										</form>
+									</li>
+									<li>
+										<form th:action="@{/account/chat_send/}" method="get">
+											<a href="javascript:void(0)"
+												onclick="this.parentNode.submit()">投稿</a>
+										</form>
+									</li>
+									<li>
+										<form th:action="@{/account/list_myartist/}" method="get">
+											<a href="javascript:void(0)"
+												onclick="this.parentNode.submit()">登録アーティスト</a>
+										</form>
+									</li>
+									
+									<li>
+										<form th:action="@{/logout}" method="post">
+											<a href="javascript:void(0)"
+												onclick="this.parentNode.submit()">ログアウト</a>
+										</form>
+									</li>
+
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!------------- 登録アーティスト ------------->
+	<div class="register_box">
+		<div>
+			<h2 id="r_title">登録アーティスト</h2>
+		</div>
+
+		<!-- 自分のアカウントページの場合 -->
+		<!-- 追加ボタン -->
+		<div th:if="${str == ma}">
+			<div class="a_regbtn">
+				<form th:action="@{/account/artist_register}" method="get">
+					<button class="btn-primary btn-sm btn-block" type="submit"
+						th:text="追加"></button>
+				</form>
+			</div>
+		</div>
+
+		<form th:action="@{/account/edit_myartist}" method="post"
+			th:object="${artist_RegisterForm}">
+			<div th:if="${ar_flag == 0}" class="font_weight">
+				好きなアーティストを登録しよう!</div>
+
+			<div th:if="${ar_flag == 1}">
+				<table th:each="list_ar_regEntity : ${list_ar_regEntity}" class="register_little_box">
+					<tr class="left">
+						<td><img class="reg_artistimage"
+							th:src="${list_ar_regEntity.artist.artistimgpath}" /> <nobor
+								th:text="${list_ar_regEntity.artist.artistname}"></nobor></td>
+					</tr>
+					<tr class="reg_sentence">
+						<td th:text="${list_ar_regEntity.sentence}"></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="/image/default/higedan_01.jpg" data-lightbox="group">
+							<img class="bigsmallimage" th:src="${list_ar_regEntity.regartistimgpath1}"  width="300"></a>
+							<img class="bigsmallimage" th:src="${list_ar_regEntity.regartistimgpath2}">
+						</td>
+
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+
+	<!-------------- 投稿履歴 ------------------->
+	<div class="chat_box">
+		<div>
+			<h2 id="c_title">投稿</h2>
+		</div>
+		
+		<div th:if="${flag == 0}">
+			<div class="nullmessage">
+				<form th:action="@{/account/chat_send/}" method="get">
+					<button  class="btn btn-primary " type="submit" th:text="投稿ページへ"></button>
+				</form>
+				<div>投稿してみよう!</div>
+			</div>
+		</div>
+
+		<div th:if="${flag == 1}">
+			<div th:each="getchatsendEntity : ${getchatsendEntity}">
+				<div>
+	
+					<ul class="sidenav2">
+						<li>
+							<form th:action="@{/chat/chat_details}" method="post"
+								th:object="${chatsendForm}">
+	
+	
+								<a href="javascript:void(0)" onclick="this.parentNode.submit()">
+									<input type="hidden" name="chatsendid"
+									th:value="${getchatsendEntity.chatsendid}">
+	
+	
+	
+									<table border="0" class="chat_sfield">
+	
+										<tr>
+											<form th:action="@{/account/account_top}" method="post"
+												th:object="${accountForm}">
+	
+												<td rowspan="2" class="s_img">
+													<!-- アカウント画像 --> <input type="image" class="bbimage"
+													th:src="${base64image}"> <input type="hidden"
+													th:if="${acc !=null}" class="form-control" name="mail"
+													th:value="${acc.getMail()}">
+												</td>
+	
+												<td>
+													<!-- ニックネーム -->
+													<p th:object="${account}">
+														<button class="nickname" type="submit"
+															th:text="*{nickname}"></button>
+													</p>
+												</td>
+											</form>
+										</tr>
+	
+										<!-- 投稿日付 -->
+										<tr>
+	
+											<td>
+												<div class="chatsendday"
+													th:text="${getchatsendEntity.chatsendday}"></div>
+											</td>
+										</tr>
+	
+										<!-- 文章 -->
+										<tr>
+											<td></td>
+											<td>
+												<div>
+													<p class="sentence" th:text="${getchatsendEntity.sentence}"></p>
+												</div>
+											</td>
+										</tr>
+									</table> <!-- 画像 -->
+									<table border="0" class="imgsize">
+										<tr>
+											<td><img th:src="${getchatsendEntity.chatimgpath1}"></td>
+											<td><img th:src="${getchatsendEntity.chatimgpath2}"></td>
+										</tr>
+										<tr>
+											<td><img th:src="${getchatsendEntity.chatimgpath3}"></td>
+											<td><img th:src="${getchatsendEntity.chatimgpath4}"></td>
+										</tr>
+									</table>
+									</a>
+							</form>
+						</li>
+	
+					</ul>
+									<hr>
+								
+	
+					<!------------------- 良いね機能、コメント---------------------->
+					<div class="n_cbox">
+						<form name="form10" class="bb">
+							<a class="LikesIcon" href="javascript:void(0)"
+								th:onclick="'func10(' + ${getchatsendEntity.chatsendid} + ',' + ${account.userid} + ');'">
+								<i class="far fa-heart LikesIcon-fa-heart"></i>
+								<input type="hidden" name="chatsendid" th:value="${getchatsendEntity.chatsendid}">
+							</a>
+						</form>
+						
+						<!-- modalボタン -->
+						<div class="c_box">
+							<input type="image" src="/image/default/comment.png" class="comment_img" th:onclick="'func1(' + ${getchatsendEntity.chatsendid} + ');func2(' + ${getchatsendEntity.account.userid} + ');'" data-toggle="modal" data-target="#modal1">
+						</div>
+					</div>
+	
+					
+	
+					<hr>
+	
+					<!-- modal -->
+					<div class="modal fade" id="modal1" tabindex="-1" role="dialog"
+						aria-labelledby="label1" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+	
+								<!-- ヘッダー -->
+								<div class="modal-header">
+									<table border="0">
+										<tr>
+											<td rowspan="3"><input type="image"
+												class="commentbigsmallimage" th:src="${base64image}">
+											</td>
+										</tr>
+	
+										<tr class="post_nickname">
+											<td id="json_nickname"></td>
+											<td><input type="hidden" id="json_chatid"></td>
+	
+										</tr>
+	
+										<tr class="post_sentence">
+											<td id="json_sentence"></td>
+										</tr>
+	
+									</table>
+	
+	
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+	
+								</div>
+	
+	
+								<!-- ページ本文 -->
+								<div class="modal-body">
+									<form th:action="@{/account/comment}" method="post"
+										th:object="${commentForm}" enctype="multipart/form-data">
+										<div class="container">
+											<div class="row justify-content-md-center">
+	
+												<div class="col-md-8">
+	
+													<div class="center">
+														<h5 class="border-bottom my-3">コメント</h5>
+													</div>
+	
+													<div th:each="getchatsendEntity : ${getchatsendEntity}"
+														th:object="${getchatsendEntity}">
+														<input type="hidden" class="form-control" name="chatsendid"
+															th:value="*{chatsendid}">
+													</div>
+	
+	
+													<!-- 文章フォーム -->
+													<div class="center">
+														【コメント内容】
+														<textarea name="sentence" class="form-control"
+															style="overflow: hidden;" rows="4" cols="40"></textarea>
+													</div>
+	
+													<!-- 画像の表示 -->
+													<div class="center">
+														【画像】
+														<div>
+															<label> <!-- ▽見せる部分 --> <span class="filelabel"
+																title="ファイルを選択"> <img class="bigsmallimage"
+																	id="preview" th:src="${iconimage}" />
+															</span> <!-- ▽本来の選択フォームは隠す --> <!-- 画像選択ボタン--> <input type="file"
+																name="multipartFile" id="myImage" class="filesend"
+																accept="image/*">
+	
+															</label>
+														</div>
+													</div>
+	
+													<!-- コメントボタン -->
+													<div class="center">
+														<div class="btn btn-default btnNext">
+															<button class="btn btn-primary" type="submit" th:text="投稿"></button>
+														</div>
+	
+													</div>
+	
+												</div>
+	
+											</div>
+	
+										</div>
+									</form>
+								</div>
+	
+							</div>
+						</div>
+					</div>
+	
+	
+	
+	
+	
+				</div>
+	
+			</div>
+		</div>	
+	</div>
+
+
+	<!-- 画像すり替え -->
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script>
+		$('#myImage').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+
+	<script>
+		$('#myImage2').on('change', function(e) {
+			var reader2 = new FileReader();
+			reader2.onload = function(e) {
+				$("#preview").attr('src', e.target.result);
+			}
+			reader2.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+
+
+	<!-- modal[ページ遷移] -->
+	<script>
+		// 表示中のページと最終ページ番号
+		var page, max = 1;
+
+		$(function() {
+			// Modalオープンボタン
+			$("#onModal").click(function() {
+				page = 1;
+				drawModal();
+				$("#myModal").modal("show");
+			});
+
+			// 次へボタン
+			$(".btnNext").click(function() {
+				page++;
+				drawModal();
+			});
+
+			// 前へボタン
+			$(".btnPrev").click(function() {
+				page--;
+				drawModal();
+			});
+
+			// Modal内表示
+			function drawModal() {
+				for (var i = 1; i <= max; i++) {
+					if (i == page)
+						$("#modal-page" + i).show()
+					else
+						$("#modal-page" + i).hide()
+				}
+			}
+		});
+	</script>
+
+
+	<!-- modal[コメント登録+表示] -->
+	<!-- 投稿データの取得 -->
+	<script>
+		function func1(id) {
+			//引数のログ
+			console.log("引数", id)
+
+			// Ajaxにてsearch関数を呼び出す
+			let request = new XMLHttpRequest();
+			request.open("get", "/search_chatdata?id=" + id, true);
+			request.send(null);
+			console.log('[c]11111');
+
+			request.onload = function(event) {
+				// Ajaxが正常終了した場合
+				if (request.readyState === 4 && request.status === 200) {
+					// 該当するデータが無かった場合
+
+					// 該当するデータがあった場合は、取得したUserDataオブジェクトの内容を画面に
+					// 表示する。その際、名前・性別・メモはデコードする
+					console.log('[c]22222');
+					//　「|| "null"」　を追記しないと空文字がある場合にエラーが発生する
+					const chatsendEntity = JSON.parse(request.responseText
+							|| "null");
+					console.log('[c]33333');
+					//投稿id
+					document.getElementById('json_chatid').textContent = decodeURI(chatsendEntity.chatsendid);
+					//文章
+					document.getElementById('json_sentence').textContent = decodeURI(chatsendEntity.sentence);
+					//投稿日
+					document.getElementById('json_chatsendday').textContent = decodeURI(chatsendEntity.chatsendday);
+					console.log('[c]44444');
+
+					// Ajaxが異常終了した場合
+				} else {
+					console.log("[c](1)エラーが発生し、データが取得できませんでした");
+				}
+			};
+			// Ajaxが異常終了した場合
+			request.onerror = function(event) {
+				console.log("[c](2)エラーが発生し、データが取得できませんでした");
+			}
+
+		}
+	</script>
+
+
+	<!-- アカウントデータの取得 -->
+	<script>
+		function func2(userid) {
+			//引数のログ
+			console.log("引数", userid)
+
+			// Ajaxにてsearch関数を呼び出す
+			let request = new XMLHttpRequest();
+			request.open("get", "/search_accountdata?userid=" + userid, true);
+			request.send(null);
+			console.log('[a]11111');
+
+			request.onload = function(event) {
+				// Ajaxが正常終了した場合
+				if (request.readyState === 4 && request.status === 200) {
+					// 該当するデータが無かった場合
+
+					// 該当するデータがあった場合は、取得したUserDataオブジェクトの内容を画面に
+					// 表示する。その際、名前・性別・メモはデコードする
+					console.log('[a]22222');
+					//　「|| "null"」　を追記しないと空文字がある場合にエラーが発生する
+					const accountEntity = JSON.parse(request.responseText
+							|| "null");
+					console.log('[a]33333');
+					//ニックネーム
+					document.getElementById('json_nickname').textContent = decodeURI(accountEntity.nickname);
+					//画像パス
+					//document.getElementById('json_accountimg').textContent = decodeURI(accountEntity.accountimgpath); 
+					console.log('[a]44444');
+
+					// Ajaxが異常終了した場合
+				} else {
+					console.log("[a](1)エラーが発生し、データが取得できませんでした");
+				}
+			};
+			// Ajaxが異常終了した場合
+			request.onerror = function(event) {
+				console.log("[a](2)エラーが発生し、データが取得できませんでした");
+			}
+
+		}
+	</script>
+
+	<script>
+		$(".toggle_img").on("click", function() {
+			if ($(this).hasClass("change")) {
+				$(this).attr("src", "/image/default/on_nice.png");
+				$(this).toggleClass("change");
+			} else {
+				$(this).attr("src", "/image/default/n_nice.png");
+				$(this).toggleClass("change");
+			}
+		});
+	</script>
+
+	<!-- ハートアニメーション -->
+	<script>
+		// Likeボタンクリック
+		$('.LikesIcon').on(
+				'click',
+				function() {
+					let $btn = $(this);
+					// Likeボタンがonクラス持っていたら
+					if ($btn.hasClass('on')) {
+
+						$btn.removeClass('on');
+
+						// 白抜きアイコンに戻す
+						$btn.children("i").attr('class',
+								'far fa-heart LikesIcon-fa-heart');
+
+					} else {
+
+						$btn.addClass('on');
+
+						// ポイントは2つ！！
+						// ①アイコンを変更する
+						// far fa-heart（白抜きアイコン）
+						// ⇒ fas fa-heart（背景色つきアイコン）
+						// ②アニメーション+アイコン色変更用のheartクラスを付与する
+
+						$btn.children("i").attr('class',
+								'fas fa-heart LikesIcon-fa-heart heart');
+
+					}
+				});
+	</script>
+
+	<!-- DMメッセージデータの取得 -->
+	<script>
+	function func10(chatsendid, userid) {
+		//引数のログ
+		console.log("chatsendid", chatsendid)
+		console.log("userid", userid)
+		$.get("/save_nicedatata/" + chatsendid+"/"+userid, null, callback);
+	}
+	function callback(result){
+			
+	}
+	</script>
+
+</body>
+</html>

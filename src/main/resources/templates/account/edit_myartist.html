@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">	
+<title>登録アーティスト編集</title>
+</head>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/account.css}" rel="stylesheet">
+<link th:href="@{/css/chat_send.css}" rel="stylesheet">
+<link th:href="@{/css/edit_myartist.css}" rel="stylesheet">
+<body>
+
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+		
+		<!-- 登録アーティストフィールド -->
+		
+		
+		<div class="R_artistfield">
+		
+		
+		</div>
+
+
+		<!----- 投稿 ----->
+		<!-- タイトル(フィールド) -->
+		<div class="profile_title" th:text="#{edit_myartist}"></div>
+
+		<div class="container">
+			<!-- テキストの両端にスペースを付ける -->
+
+			<div class="editmyartist_box">
+
+				<table class="a_img">
+					<tr>
+						<th>
+							<!-- 画像 --> <img class="myartistimage"
+							th:src="${dbget_aRegForm.artist.artistimgpath}" />
+						</th>
+
+						<th>
+							<!-- ニックネーム -->
+							<div class="padding"
+								th:text="${dbget_aRegForm.artist.artistname}"></div>
+						</th>
+					</tr>
+				</table>
+				
+				<div class="text_field">
+				<form th:action="@{/account/edit_myartist_process}" method="post" th:object="${dbget_aRegForm}" enctype="multipart/form-data" onSubmit="return check()">
+
+					<div class="row justify-content-center">
+						<!-- 文章フォーム -->
+						<div class="form-group col-sm-8">
+							<label class="chat_managetxt">メッセ―ジ</label>
+							<textarea th:field="*{sentence}" class="form-control" rows="4" cols="40" placeholder="例)こんにちは" style="overflow: hidden;"></textarea>
+							<input type="hidden" name="registerid" th:value="*{registerid}">
+							<input type="hidden" name="userid" th:value="*{userid}">
+							<input type="hidden" name="artist" th:value="*{artist.artistid}">
+							
+
+							<!-- 投稿画像1 -->
+							<label> 
+								<!-- ▽見せる部分 --> 
+								<span class="filelabel" title="ファイルを選択">
+									<img class="chatsend_icon" id="preview" th:src="*{regartistimgpath1}" />
+								</span>
+								<!-- ▽本来の選択フォームは隠す --> 
+								<!-- 画像選択ボタン--> <input type="file" name="multipartFile" id="myImage" class="filesend" accept="image/*">
+							</label>
+	
+							<!-- 投稿画像2 -->
+							<label>
+								<!-- ▽見せる部分 -->
+								<span class="filelabel" title="ファイルを選択">
+									<img class="chatsend_icon" id="preview2" th:src="*{regartistimgpath2}" />
+								</span>
+								<!-- ▽本来の選択フォームは隠す -->
+								<!-- 画像選択ボタン--> <input type="file" name="multipartFile2" id="myImage2" class="filesend"accept="image/*">
+							</label>
+							
+							<div class="s_btn">
+								<input type="submit" class="btn btn-primary" th:value="保存する">
+							</div>
+						</div>
+					
+					</div>
+
+				</form>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	
+	<!-- 画像置き換え -->
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script>
+		$('#myImage').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+
+	<script>
+		$('#myImage2').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview2").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+	
+	<script type="text/javascript"> 
+	function check(){
+	
+		if(window.confirm('以下の内容でよろしいですか？')){ // 確認ダイアログを表示
+	
+			return true; // 「OK」時は送信を実行
+	
+		}
+		else{ // 「キャンセル」時の処理
+	
+			window.alert('キャンセルされました'); // 警告ダイアログを表示
+			return false; // 送信を中止
+	
+		}
+	
+	}
+	</script>
+	
+</body>
+</html>

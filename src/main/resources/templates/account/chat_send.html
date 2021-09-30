@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">
+
+<title>投稿</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/chat_send.css}" rel="stylesheet">
+<link th:href="@{/css/account.css}" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 登録アーティストフィールド -->
+
+
+		<div class="R_artistfield"></div>
+
+		<!----- 投稿 ----->
+		<!-- タイトル(フィールド) -->
+		<div class="profile_title" th:text="#{chatsend}"></div>
+
+		<div class="container">
+			<!-- テキストの両端にスペースを付ける -->
+			<div class="chatsend_box">
+
+				<!-- 変更メッセージ-->
+				<div class="text-danger" th:text="*{chat_send_message}"></div>
+				
+				
+
+				<form th:action="@{/account/chat_send_process}" method="post" th:object="${ChatSendForm}" enctype="multipart/form-data" onSubmit="return check()">
+
+					<div class="cp_ipselect">
+					
+						<select class="cp_sl06" name="artist" required>
+							<option value="" hidden disabled selected></option>
+							
+							<option class="a" th:each="l_RegEntity : ${l_RegEntity}" th:text="${l_RegEntity.artist.artistname}" th:value="${l_RegEntity.artist.artistid}"></option>
+						</select>
+						
+						<span class="cp_sl06_highlight"></span>
+						<span class="cp_sl06_selectbar"></span>
+						<label class="cp_sl06_selectlabel">ルーム選択</label>
+					</div>
+					
+						
+					<div class="row justify-content-center">
+						<!-- 文章フォーム -->
+						<div class="form-group col-sm-8">
+							<label class="chat_managetxt">投稿内容</label>
+							<textarea th:field="*{sentence}" class="form-control" rows="4"
+								cols="40" placeholder="例)こんにちは" style="overflow: hidden;"></textarea>
+						</div>
+					</div>
+
+
+					<!-- 投稿画像1 -->
+					<label> <!-- ▽見せる部分 --> <span class="filelabel"
+						title="ファイルを選択"> <img class="chatsend_icon" id="preview"
+							th:src="${iconimage}" />
+					</span> <!-- ▽本来の選択フォームは隠す --> <!-- 画像選択ボタン--> <input type="file"
+						name="multipartFile" id="myImage" class="filesend"
+						accept="image/*">
+					</label>
+
+					<!-- 投稿画像2 -->
+					<label> <!-- ▽見せる部分 --> <span class="filelabel"
+						title="ファイルを選択"> <img class="chatsend_icon" id="preview2"
+							th:src="${iconimage}" />
+					</span> <!-- ▽本来の選択フォームは隠す --> <!-- 画像選択ボタン--> <input type="file"
+						name="multipartFile2" id="myImage2" class="filesend"
+						accept="image/*">
+					</label>
+
+					<!-- 投稿画像3 -->
+					<label> <!-- ▽見せる部分 --> <span class="filelabel"
+						title="ファイルを選択"> <img class="chatsend_icon" id="preview3"
+							th:src="${iconimage}" />
+					</span> <!-- ▽本来の選択フォームは隠す --> <!-- 画像選択ボタン--> <input type="file"
+						name="multipartFile3" id="myImage3" class="filesend"
+						accept="image/*">
+					</label>
+
+					<!-- 投稿画像4 -->
+					<label> <!-- ▽見せる部分 --> <span class="filelabel"
+						title="ファイルを選択"> <img class="chatsend_icon" id="preview4"
+							th:src="${iconimage}" />
+					</span> <!-- ▽本来の選択フォームは隠す --> <!-- 画像選択ボタン--> <input type="file"
+						name="multipartFile4" id="myImage4" class="filesend"
+						accept="image/*">
+					</label>
+
+
+
+					<!--投稿ボタン -->
+					<div class="chat_btn">
+						<button class="btn btn-primary btn-lg" type="submit"
+							th:text="#{chat_send}"></button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- bootstrap -->
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+	<!-- 画像置き換え -->
+	<script>
+		$('#myImage').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+
+	<script>
+		$('#myImage2').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview2").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+
+	<script>
+		$('#myImage3').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview3").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+
+	<script>
+		$('#myImage4').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview4").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+	
+	<script type="text/javascript"> 
+	function check(){
+	
+		if(window.confirm('以下の内容でよろしいですか？')){ // 確認ダイアログを表示
+			
+			return true; // 「OK」時は送信を実行
+			
+		}
+		else{ // 「キャンセル」時の処理
+	
+			window.alert('キャンセルされました'); // 警告ダイアログを表示
+			return false; // 送信を中止
+	
+		}
+	
+	}
+	</script>
+
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- 画像の切り替え用 -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+	integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+	integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+	crossorigin="anonymous"></script>
+	
+<!-- bootstrap -->
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+	rel="stylesheet">
+
+<title>アカウント編集</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/account.css}" rel="stylesheet">
+<link th:href="@{/css/account_manage.css}" rel="stylesheet">
+</head>
+<body>
+
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+		
+		<!-- メニュータイトル-->
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+		
+		
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+		
+		<!-- 登録アーティストフィールド -->
+		
+		
+		<div class="R_artistfield">
+		
+		
+		</div>
+	
+	
+	
+		<!-- タイトル(フィールド) -->
+		<div class="profile_title" th:text="アカウント編集"></div>
+		
+				<div class="accmanage_box">
+
+						<!-- フォーム -->
+						<form th:action="@{/account/save}" method="post" th:object="${accountForm}" enctype="multipart/form-data" onSubmit="return check()">
+							
+							<!-- 変更ボタン -->
+							<div class="accmanage_btn">
+								<button class="btn btn-primary" type="submit" th:text="変更する"></button>
+							</div>
+							
+							<!-- 画像の表示 -->
+							<div class="img_field">
+								 
+								<label>
+									<!-- ▽見せる部分 -->
+									<span class="filelabel" title="ファイルを選択">
+										<img class="accountimage" id="preview" th:src="${base64image}"  border="0"/>
+									</span>
+										
+									<!-- ▽本来の選択フォームは隠す -->
+									<!-- 画像選択ボタン-->
+									<input type="file" name="multipartFile" id="myImage" class="filesend" accept="image/*">
+												 
+								</label>
+							</div>	
+	
+							<!-- ユーザーid -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{userid}"> 
+							<!-- セッションメールアドレス -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{mail}"> 
+							<!-- パスワード -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{password}"> 
+							<!-- フォロー数 -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{follownum}"> 
+							<!-- フォロワー数 -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{followernum}"> 
+								
+								<div class="row justify-content-center">
+								
+									<!-- ニックネーム -->
+									<div class="form-group col-sm-6">
+										<div>
+								            <label class="account_managetxt">ニックネーム(10文字以内)</label>
+								            <input type="text" class="form-control" th:errorclass="is-invalid" th:field="*{nickname}">
+								            <div class="invalid-feedback" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></div>
+							            </div>
+							        </div>
+									
+									<br><br><br>
+									<!-- 自己紹介文 -->
+									<div class="form-group col-sm-8">
+										<div class="intro_txt">
+								            <label class="account_managetxt">自己紹介文(100文字以内)</label>
+								            <textarea th:errorclass="is-invalid" th:field="*{introduction}" class="form-control" style="overflow: hidden;" rows="5" cols="40" placeholder="例)こんにちは"></textarea>
+								        	<div class="invalid-feedback" th:if="${#fields.hasErrors('introduction')}" th:errors="*{introduction}"></div>
+							        	</div>
+							        </div>
+								</div>
+						
+								
+							
+
+						</form>
+						
+						
+						<!-- modal -->
+						<div th:if="${flg == 1}">
+						<div class="modal fade" id="modal1" tabindex="-1" role="dialog"
+							aria-labelledby="label1" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+		
+									<!-- ヘッダー -->
+									<div class="modal-header">
+										
+		
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+		
+									</div>
+		
+		
+									<!-- ページ本文 -->
+									<div class="modal-body">
+										
+											<div class="container">
+												<div class="row justify-content-md-center">
+		
+													<div class="col-md-8">
+		
+														<div class="center">
+															<h5 class="border-bottom my-3">コメント</h5>
+														</div>
+		
+														
+		
+													</div>
+		
+												</div>
+		
+											</div>
+										
+									</div>
+		
+								</div>
+							</div>
+						</div>
+
+				</div>
+			</div>
+		</div>	
+
+	<!-- bootstrap -->
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+	<!-- 画像置き換え -->
+	<script>
+		$('#myImage').on('change', function(e) {
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#preview").attr('src', e.target.result);
+			}
+			reader.readAsDataURL(e.target.files[0]);
+		});
+	</script>
+	
+	
+	
+
+</body>
+</html>

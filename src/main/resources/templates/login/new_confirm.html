@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+
+<title>暗証入力</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+	<!-- トップバー --> 
+	<div class="top">
+		
+	</div>
+	
+	<div class="box">
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+	
+		<div class="litle_box">
+			<div class="container">
+	    		<div class="row justify-content-md-center">
+	      			<div class="col-md-8">
+	      			
+	      				<!-- タイトル -->
+				        <h4 class="border-bottom my-3" th:text="#{code}"></h4>
+	      			
+	      				<!-- 入力フォーム(ニックネーム、メール、パスワードはhiddenで隠す) -->
+					    <form th:action="@{/login/new_comp}" method="post" th:object="${loginForm}">
+					    	<!-- ニックネーム -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{nickname}"> 
+					        
+							<!-- メールアドレス -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{mail}">
+							        
+							<!-- パスワード -->
+							<input type="hidden" class="form-control" th:errorclass="is-invalid" th:field="*{password}">
+							          	
+							<!-- 暗証番号 -->
+							<div class="form-group">
+								
+								<!-- エラー表示(値が異なる) -->
+								<div class = "text-danger" th:if="${randomValue != loginForm.getCode()}" th:text = "#{code_numerror}"></div>
+								<!-- エラー表示(バリデーションチェック) -->
+							    <input type="text" class="form-control" th:errorclass="is-invalid" th:field="*{code}">
+							    <div class = "text-danger" th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></div>
+						    </div>
+						        
+						    <!-- 送信ボタン -->
+						       　<button class="btn btn-primary btn-lg btn-block my-4" type="submit" th:text="#{submit}"></button>
+						</form>   
+				        
+				        <!-- ログインに戻るボタン -->
+				        <form th:action="@{/}" method="get">
+				        <button class="btn btn-primary btn-lg btn-block my-4" type="submit" th:text="#{login_back}"></button>
+				        </form>
+				        
+	      			</div>
+	      			
+	    		</div>
+			</div>
+		</div>
+	</div>	
+<!-- bootstrap -->	
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src ="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+<!-- パスワードをテキスト化 -->
+<script>
+ const pwd = document.getElementById('password');
+ const pwdCheck = document.getElementById('password-check');
+ pwdCheck.addEventListener('change', function() {
+     if(pwdCheck.checked) {
+         pwd.setAttribute('type', 'text');
+     } else {
+         pwd.setAttribute('type', 'password');
+     }
+ }, false);
+ </script>
+
+</body>
+</html>

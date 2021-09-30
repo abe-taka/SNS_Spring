@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">	
+<title>登録アーティスト一覧</title>
+<link th:href="@{/css/common.css}" rel="stylesheet">
+<link th:href="@{/css/account.css}" rel="stylesheet">
+<link th:href="@{/css/artist_list.css}" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<!-- トップバー -->
+	<div class="top"></div>
+
+	<!-- メニュータイトル-->
+
+	<!-- 親要素 -->
+	<div class="box">
+
+		<img src="/image/default/music.png" class="top_img">
+		<div th:text="#{project_title}" class="top_text"></div>
+		<img src="/image/default/music.png" class="top_img2">
+
+		<div class="search_btn">
+			<form th:action="@{/account/artist_register}"
+				class="row justify-content-md-center" method="post">
+				<div class="row">
+					<div class="radius">
+						<label></label> <input type="text" placeholder="検索"
+							class="form-control">
+					</div>
+					<div>
+						<label></label>
+						<div>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fas fa-search"></i>
+							</button>
+
+						</div>
+					</div>
+
+				</div>
+
+
+			</form>
+
+			<img class="header_accountimg" th:src="${Top_base64image}" />
+
+		</div>
+
+		<div th:text="#{menu_title}" class="menu_title"></div>
+		<!-- 登録アーティストタイトル -->
+		<div th:text="#{his_message_title}" class="his_message_title"></div>
+
+
+		<!-- ナビゲーション -->
+		<div class="navi_box">
+			<ul class="sidenav">
+				<li>
+					<form th:action="@{/chat/chat}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">トップ</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/account/account_top}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">プロフィール</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/artist_room/search_room}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">アーティストルーム</a>
+					</form>
+				<li>
+					<form th:action="@{/user_search/user_search}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">ユーザー検索</a>
+					</form>
+				</li>
+				<li>
+					<form th:action="@{/dm/dm_history}" method="get"
+						enctype="multipart/form-data">
+						<a href="javascript:void(0)" onclick="this.parentNode.submit()">メッセージ</a>
+					</form>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 登録アーティストフィールド -->
+
+
+		<div class="R_artistfield"></div>
+
+
+
+		<!----- アカウント管理 ----->
+
+		<!-- タイトル(フィールド) -->
+		<div class="profile_title" th:text="登録アーティスト一覧"></div>
+
+		<div class="container">
+			<!-- テキストの両端にスペースを付ける -->
+
+			<div class="list_myartist_box">
+
+				
+				
+				<div class="row justify-content-md-center">
+					<div>
+
+
+						<!-- 追加ボタン -->
+						<form th:action="@{/account/artist_register}" method="get">
+							<div class="add_btn">
+								<button type="submit" th:text="#{add}" class="btn btn-primary btn-block"></button>
+							</div>
+						</form>
+						
+						<div th:if="${flg == 1}">
+							<table class="little_myartist_box" border="0">
+	
+	
+	
+								<tr th:each="list_ar_regEntity : ${list_ar_regEntity}" class="a_border">
+	
+									<td class="left"><img class="artistimage"
+										name="artist.artistimgpath"
+										th:src="${list_ar_regEntity.artist.artistimgpath}" /> <nobor
+											th:text="${list_ar_regEntity.artist.artistname}"
+											class="padding" name="artist.artistname"
+											th:value="${list_ar_regEntity.artist.artistname}"></nobor></td>
+	
+	
+									<td>
+										<form th:action="@{/account/edit_myartist}" method="post"
+											th:object="${artist_RegisterForm}">
+											<button type="submit" th:text="#{edit}"
+												class="btn-primary btn-sm" name="Buttonvalue"
+												th:value="${registerid}"></button>
+											<input type="hidden" class="artistimage" name="registerid"
+												th:value="${list_ar_regEntity.registerid}" />
+										</form>
+									</td>
+	
+									<td>
+										<form th:action="@{/account/delete_myartist}" method="post"
+											th:object="${artist_RegisterForm}">
+											<button type="submit" th:text="#{delete}"
+												class="btn-primary btn-sm" name="Buttonvalue"
+												th:value="${delete}"></button>
+											<input type="hidden" class="artistimage" name="registerid"
+												th:value="${list_ar_regEntity.registerid}" />
+										</form>
+									</td>
+								</tr>
+								</form>
+							</table>
+						</div>
+						
+						<div th:if="${flg == 0}">
+							
+							<div class="none_message"　th:text="好きなアーティストを追加しよう！"></div>
+							
+						</div>	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- bootstrap -->
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
