@@ -1,2 +1,2 @@
-# SNS_SpringBoot
-SNSアプリ(SpringBoot)
+# SNS_Spring
+SNSアプリ(Spring)
