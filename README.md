@@ -1,2 +1,2 @@
 # SNS_Spring
-SNSアプリ(Spring)
+SNSアプリ[Spring]
